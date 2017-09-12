@@ -321,16 +321,22 @@ angular.module('colorpicker.module', [])
               .on('keyup', function() {
                 var newColor = this.value;
                 elem.val(newColor);
-                if (ngModel && ngModel.$modelValue !== newColor) {
+                if (ngModel && ngModel.$modelValue !== newColor && validateHex(newColor)) {
                   $scope.$apply(ngModel.$setViewValue(newColor));
                   update(true);
                 }
               }).on('keydown', function(event){
-                if (event.keyCode===13 && /^#[0-9A-Fa-f]{6}$/.test(pickerColorInput.val())){
+                if (event.keyCode===13 && validateHex(pickerColorInput.val())) {
+                  $scope.$apply(ngModel.$setViewValue(pickerColorInput.val()));
+                  update(true);
                   emitEvent('colorpicker-selected');
                 }
 
               });
+          }
+
+          function validateHex(hexCode){
+            return /^#[0-9A-Fa-f]{6}$/.test(hexCode);
           }
 
           function bindMouseEvents() {
