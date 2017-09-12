@@ -325,6 +325,11 @@ angular.module('colorpicker.module', [])
                   $scope.$apply(ngModel.$setViewValue(newColor));
                   update(true);
                 }
+              }).on('keydown', function(event){
+                if (event.keyCode===13 && /^#[0-9A-Fa-f]{6}$/.test(pickerColorInput.val())){
+                  emitEvent('colorpicker-selected');
+                }
+
               });
           }
 
